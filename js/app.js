@@ -217,8 +217,8 @@
         switch(directKey) {
           case "up":
             tempArray = aBottom;
-            aBottom = aBack;
-            aBack = aTop;
+            aBottom = flip(aBack);
+            aBack = flip(aTop);
             aTop = aFront;
             aFront = tempArray;
 
@@ -229,8 +229,8 @@
             break;
           case "down": 
             tempArray = aTop;
-            aTop = aBack;
-            aBack = aBottom;
+            aTop = flip(aBack);
+            aBack = flip(aBottom);
             aBottom = aFront;
             aFront = tempArray;
 
@@ -367,10 +367,12 @@
 
     var moveColUp = function(y){
       var tempArray;
+      var flippedBack = flip(aBack);
+      var flippedTop = flip(aTop);
       for (var x=0; x<3; x++) {
         tempArray = aBottom[x][y];
-        aBottom[x][y] = aBack[x][y];
-        aBack[x][y] = aTop[x][y];
+        aBottom[x][y] = flippedBack[x][y];
+        aBack[x][y] = flippedTop[x][y];
         aTop[x][y] = aFront[x][y];
         aFront[x][y] = tempArray;
       }
@@ -378,17 +380,18 @@
 
     var moveColDown = function(y){
       var tempArray;
+      var flippedBack = flip(aBack);
+      var flippedBottom = flip(aBottom);
       for (var x=0; x<3; x++) {
         tempArray = aTop[x][y];
-        aTop[x][y] = aBack[x][y];
-        aBack[x][y] = aBottom[x][y];
+        aTop[x][y] = flippedBack[x][y];
+        aBack[x][y] = flippedBottom[x][y];
         aBottom[x][y] = aFront[x][y];
         aFront[x][y] = tempArray;
       }
     }
 
     var twistClockwise = function(twistArray){
-      console.log("Twist clockwise");
       var v00 = twistArray[0][0];
       var v01 = twistArray[0][1];
       var v02 = twistArray[0][2];
@@ -412,7 +415,6 @@
     }
 
     var twistCounterClockwise = function(twistArray){
-      console.log("Twist counter clockwise");
       var v00 = twistArray[0][0];
       var v01 = twistArray[0][1];
       var v02 = twistArray[0][2];
@@ -431,6 +433,24 @@
       twistArray[0][1] = v12;
       twistArray[2][2] = v20;
       twistArray[1][2] = v21;
+      twistArray[0][2] = v22;
+      return twistArray;
+    }
+
+    var flip = function(twistArray){
+      console.log("Flippin");
+      var v00 = twistArray[0][0];
+      var v01 = twistArray[0][1];
+      var v02 = twistArray[0][2];
+      var v20 = twistArray[2][0];
+      var v21 = twistArray[2][1];
+      var v22 = twistArray[2][2];
+      
+      twistArray[2][0] = v00;
+      twistArray[2][1] = v01;
+      twistArray[2][2] = v02;
+      twistArray[0][0] = v20;
+      twistArray[0][1] = v21;
       twistArray[0][2] = v22;
       return twistArray;
     }
